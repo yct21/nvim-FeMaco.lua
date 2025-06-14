@@ -40,7 +40,7 @@ end
 
 local get_match_text = function(match, bufnr)
   local srow, scol, erow, ecol = get_match_range(match)
-  return table.concat(vim.api.nvim_buf_get_text(bufnr, srow, scol, erow, ecol, {}), "\n")
+  return table.concat(vim.api.nvim_buf_get_text(bufnr, srow, 0, erow, ecol, {}), "\n")
 end
 
 local parse_match = function(match)
@@ -164,7 +164,7 @@ local tbl_equal = function(left_tbl, right_tbl)
 end
 
 local get_indent_size = function(line, indent_char)
-    return #line:match("^[" .. indent_char .. "]*")
+  return #line:match("^[" .. indent_char .. "]*")
 end
 
 -- calculate indent sizes for first, last, and intermediate lines
@@ -295,8 +295,13 @@ M.edit_code_block = function()
   if match_data == nil then
     return
   end
+
   local match_lines = vim.split(get_match_text(match_data.content, 0), "\n")
-  local filetype = settings.ft_from_lang(match_data.lang)
+  -- for i, line in ipairs(match_lines) do
+  --   print(string.format("match_lines[%d]: %s", i, line))
+  -- end
+  -- local filetype = settings.ft_from_lang(match_data.lang)
+  local filetype = "text"
 
   local indent = nil
   local lines_for_edit = match_lines
@@ -342,7 +347,7 @@ M.edit_code_block = function()
       if should_normalize_indent and indent then
         lines = denormalize_lines(lines, indent)
       end
-      vim.api.nvim_buf_set_text(bufnr, sr, sc, er, ec, lines)
+      vim.api.nvim_buf_set_text(bufnr, sr, 0, er, ec, lines)
       update_range(range, lines)
     end,
   })
