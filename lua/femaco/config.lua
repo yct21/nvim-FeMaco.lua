@@ -1,4 +1,4 @@
-local clip_val = require('femaco.utils').clip_val
+local clip_val = require("femaco.utils").clip_val
 
 local M = {}
 
@@ -18,14 +18,14 @@ M.settings = {
   --   * lang
   float_opts = function(code_block)
     return {
-      relative = 'cursor',
-      width = clip_val(5, 120, clip_val(5, vim.api.nvim_win_get_width(0) - 10, 1000)),  -- TODO how to offset sign column etc?
+      relative = "cursor",
+      width = clip_val(5, 120, clip_val(5, vim.api.nvim_win_get_width(0) - 10, 1000)), -- TODO how to offset sign column etc?
       height = clip_val(5, #code_block.lines, clip_val(5, vim.api.nvim_win_get_height(0) - 6, 1000)),
-      anchor = 'NW',
+      anchor = "NW",
       row = 0,
       col = 0,
-      style = 'minimal',
-      border = 'rounded',
+      style = "minimal",
+      border = "rounded",
       zindex = 1,
     }
   end,
@@ -36,7 +36,7 @@ M.settings = {
   end,
   -- what to do after opening the float
   post_open_float = function(winnr)
-    vim.wo.signcolumn = 'no'
+    vim.wo.signcolumn = "no"
   end,
   -- create the path to a temporary file
   create_tmp_filepath = function(filetype)
@@ -58,9 +58,9 @@ M.settings = {
   -- @param base_filetype: The filetype which FeMaco is called from, not the
   -- filetype of the injected language (this is the current buffer, so you can
   -- get it from vim.bo.filetype).
-  normalize_indent = function (base_filetype)
+  normalize_indent = function(base_filetype)
     return false
-  end
+  end,
 }
 
 return M
